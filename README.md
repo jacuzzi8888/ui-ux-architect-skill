@@ -37,6 +37,8 @@ This skill is built around a few practical rules:
 - explain why a recommendation helps the user experience
 - optimize for clarity before novelty
 - load only the minimum context needed
+- inspect the smallest useful surface before expanding
+- avoid repeating audits, theory, or file reads without a concrete reason
 - keep accessibility and ethical design as baseline quality
 - preserve user control over major design decisions
 
@@ -52,10 +54,11 @@ If the user asks for a review, audit, usability check, accessibility pass, or re
 
 - inspect the smallest useful surface first
 - state what already works
-- identify the top issues by impact
+- identify the top `3` issues by impact by default
 - explain why each issue matters
 - recommend focused fixes
 - stop at analysis unless the user explicitly asks for implementation
+- end with a compact handoff memo if implementation is likely to follow in the same session
 
 ### 2. Explicit Scoped Change Requests
 
@@ -64,6 +67,7 @@ If the user already asked for a specific UI change such as improving spacing, hi
 - treat the request as approved within that scope
 - avoid asking for redundant permission
 - implement or guide the requested fix directly
+- avoid a broad second-pass audit before making the approved change
 - avoid expanding the task into a full redesign unless necessary
 
 ### 3. Open-Ended Redesign Requests
@@ -117,7 +121,84 @@ Expected output:
 - recommended fixes
 - accessibility concerns
 - approval needed, if any
+- handoff memo, when implementation may follow
 - implementation plan, if changes are requested
+
+## Low-Token Usage Patterns
+
+The skill is standalone, but it is also written to support lower-token workflows when users apply it deliberately.
+
+### Minimal Surface First
+
+For existing projects, start with:
+
+- the directly affected page or screen
+- the local layout or container
+- nearby components
+- local styles
+
+Expand to shared components, global styles, navigation, or design tokens only when the issue clearly points there or a blocker appears.
+
+### Top 3 Issues Default
+
+For audits, the skill defaults to the top `3` issues by impact unless the user asks for a broader pass. This keeps findings focused and reduces unnecessary exploration and output.
+
+### Same-Session Handoff
+
+If an audit is likely to be followed by implementation in the same session, end the audit with a compact handoff memo and use that memo as the source of truth for the implementation phase.
+
+This avoids:
+
+- repeating the full audit
+- reopening already-understood files without a reason
+- doing a broad second-pass review before an approved scoped fix
+
+## Low-Token Prompt Patterns
+
+These patterns help GitHub users get better token efficiency while still using the standalone `skill.md`.
+
+### Audit Prompt Pattern
+
+```text
+Use this UI/UX skill to audit an existing project.
+Inspect only the smallest useful surface first.
+Return what already works, the top 3 issues by impact, why they matter, recommended fixes, and a compact handoff memo.
+Do not broaden the audit unless the evidence points there.
+```
+
+### Implementation Prompt Pattern
+
+```text
+Use this UI/UX skill to implement the approved existing-project fixes below.
+Treat the listed scope as approved.
+Do not repeat the prior audit or do a broad second-pass review.
+Open additional files only if blocked or if the root cause clearly lies elsewhere.
+```
+
+### Same-Session Handoff Pattern
+
+After the audit, carry forward only a compact memo like this:
+
+```text
+scope: Settings page form clarity and spacing
+approved_changes: Improve field grouping, label clarity, error visibility
+affected_surfaces: Settings screen, local form component, local styles
+approval_status: Scoped fixes approved; no navigation redesign approved
+blockers: Need to confirm whether validation copy is shared across forms
+```
+
+Then start implementation with:
+
+```text
+Use the handoff memo below as the source of truth.
+Do not repeat the audit unless a blocker or new evidence appears.
+
+scope: ...
+approved_changes: ...
+affected_surfaces: ...
+approval_status: ...
+blockers: ...
+```
 
 ## Beginner-Friendly Defaults
 
@@ -168,6 +249,8 @@ You can use the skill with prompts like these:
 
 Copy the contents of `skill.md` into your AI tool as a system prompt, reusable instruction block, or agent behavior file.
 
+For lower token cost on existing-project work, pair the skill with the prompt patterns above so the model starts narrow, defaults to the top `3` issues, and uses a handoff memo between audit and implementation.
+
 ### Option 2: Adapt It To A Platform-Specific Skill Format
 
 If your agent framework expects metadata, manifests, or frontmatter, wrap `skill.md` with whatever your platform requires.
@@ -215,6 +298,7 @@ If you want to expand the repository later, useful additions would be:
 - sample review outputs
 - framework-specific adaptations for React, Vue, or design-heavy frontend workflows
 - a companion reference file with UI review checklists
+- benchmark results comparing low-token and unrestricted workflows
 
 ## Contributing
 
@@ -228,4 +312,4 @@ If you adapt or improve this skill, keep the core principles intact:
 
 ## License
 
-Add the license of your choice before publishing to GitHub so other people know how they can reuse or modify the skill.
+This project is released under the MIT License. See `LICENSE` for details.

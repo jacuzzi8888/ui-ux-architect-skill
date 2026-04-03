@@ -7,10 +7,16 @@ Use this skill when planning, auditing, improving, or implementing digital inter
 ## Token Discipline
 
 - Load only the minimum context needed.
-- Start with the smallest useful surface: entry screen, layout files, shared components, styles, and design tokens if they exist.
-- Read more files only when blocked or when a decision depends on them.
+- Start with the smallest useful surface: the directly affected screen or page, local layout file, nearby components, and local styles.
+- Inspect global styles, design tokens, navigation, or shared components only when the issue points there or a blocker requires it.
+- On existing-project audits, default to the top `3` issues by impact unless the user asks for a broader pass.
+- Read more files only when blocked, when the likely root cause lies elsewhere, or when a structural decision depends on them.
+- Do not reopen already-understood files without a concrete reason.
+- For same-session audit and implementation work, end the audit with a compact handoff memo and use it as the source of truth for implementation.
+- Do not restate the full audit or re-explain design theory during implementation unless a blocker, new evidence, or user request requires it.
 - Ask at most one or two high-value questions when intent is unclear.
 - Prefer one strong recommendation over many alternatives.
+- Do not generate multiple alternatives unless the user asks.
 - Keep responses compact and structured.
 - Explain design terms only when they affect the current decision.
 - Avoid long theory dumps; teach only what helps the user act.
@@ -103,17 +109,20 @@ Output template:
 ## Existing Project Mode
 
 1. Inspect the smallest useful surface first.
-2. State what already works.
-3. Identify only the top issues by impact.
-4. For each major issue, use:
+2. Start with the directly affected page or screen, local layout file, nearby components, and local styles.
+3. Expand to shared components, tokens, navigation, or global styles only if the issue points there or a blocker appears.
+4. State what already works.
+5. Identify the top `3` issues by impact unless the user asks for a broader audit.
+6. For each major issue, use:
    - issue
    - why it matters
    - recommended fix
-5. Separate must-fix items from optional improvements.
-6. For audits and reviews, stop at findings and recommendations unless the user asks for changes.
-7. For explicit scoped fixes, implement within the requested bounds.
-8. For broader redesigns or structural changes, ask which fixes to apply.
-9. If implementation is approved, adapt the plan to the current stack.
+7. Separate must-fix items from optional improvements.
+8. For audits and reviews, stop at findings, recommendations, and a handoff memo unless the user asks for changes.
+9. For explicit scoped fixes, treat that scope as approved, avoid a broad second-pass review, and implement with the minimum needed context.
+10. For broader redesigns or structural changes, recommend one direction and ask which fixes to apply before implementation.
+11. If implementation follows an audit in the same session, use the handoff memo as the source of truth and reopen files only when a blocker or changed hypothesis requires it.
+12. If implementation is approved, adapt the plan to the current stack.
 
 Output template:
 - what works
@@ -122,7 +131,24 @@ Output template:
 - recommended fixes
 - accessibility concerns
 - approval needed, if any
+- handoff memo, when an audit may lead to implementation
 - implementation plan, if changes are requested
+
+## Same-Session Handoff Memo
+
+When an existing-project audit is likely to lead to implementation in the same session, end with a compact memo in this format:
+
+- `scope`: the exact area or request the audit covered
+- `approved_changes`: the issues or fixes approved for implementation
+- `affected_surfaces`: the pages, components, files, or UI regions most likely involved
+- `approval_status`: what is approved, what still needs confirmation
+- `blockers`: unresolved questions or missing context that could block implementation
+
+Implementation rules after the memo:
+
+- Use the memo as the source of truth instead of repeating the full audit.
+- Do not perform a broad re-audit before making an approved scoped fix.
+- Reopen files only if a blocker appears, the hypothesis changes, or the user expands scope.
 
 ## Accessibility And Ethics
 
@@ -143,6 +169,7 @@ Always check for:
 - Prefer examples over theory for beginners.
 - Do not overwhelm the user with long option lists.
 - Make the next decision and next step obvious.
+- In implementation after an audit, summarize only the delta from the handoff memo.
 
 ## Constraints
 
@@ -150,3 +177,6 @@ Always check for:
 - Do not optimize for novelty over clarity.
 - Do not force a framework change if the current stack is workable.
 - Do not bury key reasoning in jargon or long theory.
+- Do not reopen already-understood files without a concrete reason.
+- Do not repeat the full audit in implementation responses.
+- Do not do a broad second-pass review before an approved scoped fix.
