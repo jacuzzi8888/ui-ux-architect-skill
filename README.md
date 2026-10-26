@@ -27,7 +27,7 @@ This skill is useful for:
 
 ## Repository Contents
 
-- `skill.md`: the main portable skill definition
+- `ui-ux-architect/SKILL.md`: the main skill definition, following the [Agent Skills specification](https://agentskills.io/specification)
 
 ## Design Philosophy
 
@@ -42,7 +42,7 @@ This skill is built around a few practical rules:
 - keep accessibility and ethical design as baseline quality
 - preserve user control over major design decisions
 
-The skill is intentionally written as a body-only Markdown document rather than a platform-specific package. That makes it easier to adapt to different AI systems, prompt runners, or custom agent frameworks.
+The skill is written as a standard [Agent Skill](https://agentskills.io): a skill folder containing a `SKILL.md` file with YAML frontmatter (`name`, `description`, `license`) followed by the instruction body. This is the format natively supported by OpenCode, Claude Code, Codex, and other agent platforms, while the Markdown body itself still works as a plain prompt template in any tool.
 
 ## How The Skill Behaves
 
@@ -155,7 +155,7 @@ This avoids:
 
 ## Low-Token Prompt Patterns
 
-These patterns help GitHub users get better token efficiency while still using the standalone `skill.md`.
+These patterns help GitHub users get better token efficiency while still using the standalone `SKILL.md` body.
 
 ### Audit Prompt Pattern
 
@@ -245,59 +245,56 @@ You can use the skill with prompts like these:
 
 ## How To Use This Repository
 
-### Option 1: Use It As A Prompt Template
+### Option 1: Install It As A Skill
 
-Copy the contents of `skill.md` into your AI tool as a system prompt, reusable instruction block, or agent behavior file.
+Clone the repository and copy the skill folder into your agent's skills directory:
+
+- **OpenCode**: `~/.config/opencode/skills/ui-ux-architect/` (or `.opencode/skills/ui-ux-architect/` inside a project)
+- **Claude Code**: `~/.claude/skills/ui-ux-architect/`
+- **Codex / other platforms**: follow your platform's skill discovery path; most scan for `SKILL.md` files with `name` and `description` frontmatter
+
+### Option 2: Use It As A Prompt Template
+
+Copy the body of `SKILL.md` (everything below the frontmatter) into your AI tool as a system prompt, reusable instruction block, or agent behavior file.
 
 For lower token cost on existing-project work, pair the skill with the prompt patterns above so the model starts narrow, defaults to the top `3` issues, and uses a handoff memo between audit and implementation.
-
-### Option 2: Adapt It To A Platform-Specific Skill Format
-
-If your agent framework expects metadata, manifests, or frontmatter, wrap `skill.md` with whatever your platform requires.
-
-Examples:
-
-- add YAML frontmatter for systems that use `name` and `description`
-- rename the file to `SKILL.md` if your tool expects that convention
-- place it inside a skill folder if your agent framework uses folder-based discovery
-- add platform-specific metadata files only if that tool actually needs them
 
 ### Option 3: Use It As A Team Standard
 
 You can also use this repository as a reference for how your team wants AI agents to handle UI and UX tasks. In that setup, the skill acts as a behavior contract rather than a direct installable package.
 
-## Why There Is No YAML Frontmatter
+## Standards Compliance
 
-This repository keeps the skill body-only on purpose.
+This skill follows the [Agent Skills specification](https://agentskills.io/specification):
 
-Some agent systems require YAML frontmatter or a specific manifest format, but others do not. Keeping the file portable makes it easier for people to adapt the skill to their own environment instead of forcing one ecosystem's packaging rules onto everyone else.
-
-If you want a Codex-specific version later, you can add frontmatter and any required metadata in a separate variant without changing the core instruction body.
+- `SKILL.md` (uppercase) with YAML frontmatter containing the required `name` and `description` fields
+- `name` matches the parent directory name and uses lowercase letters and hyphens only
+- `description` describes both what the skill does and when to use it, so agents can discover and activate it correctly from metadata alone
+- the body stays under the recommended 500-line limit and follows progressive disclosure
 
 ## Recommended GitHub Presentation
-
-If you publish this repository for others to use, a simple structure is enough:
 
 ```text
 .
 |-- README.md
-`-- skill.md
+|-- LICENSE
+`-- ui-ux-architect/
+    `-- SKILL.md
 ```
 
 That keeps the repository easy to understand:
 
-- `README.md` explains the purpose, usage, and adaptation path
-- `skill.md` contains the actual reusable instruction set
+- `README.md` explains the purpose, usage, and install path
+- `ui-ux-architect/SKILL.md` contains the actual reusable instruction set
 
 ## Suggested Future Improvements
 
 If you want to expand the repository later, useful additions would be:
 
-- a Codex-ready variant with frontmatter
 - example before-and-after prompts
 - sample review outputs
 - framework-specific adaptations for React, Vue, or design-heavy frontend workflows
-- a companion reference file with UI review checklists
+- a `references/` folder with UI review checklists, loaded on demand for progressive disclosure
 - benchmark results comparing low-token and unrestricted workflows
 
 ## Contributing

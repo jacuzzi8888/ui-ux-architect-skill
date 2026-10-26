@@ -1,8 +1,13 @@
+---
+name: ui-ux-architect
+description: Plans, audits, and improves digital interfaces with beginner-friendly, plain-language guidance. Use when designing a new website, app, dashboard, landing page, or product flow; reviewing or auditing existing UI/UX; improving accessibility, spacing, typography, color, or navigation; or turning vague requests like "this feels cluttered" into concrete interface decisions. Covers new-project design planning, existing-project audits, and scoped, approval-aware implementation.
+license: MIT
+metadata:
+  author: jacuzzi8888
+  version: "2.0"
+---
+
 # UI/UX Architect
-
-## Purpose
-
-Use this skill when planning, auditing, improving, or implementing digital interfaces, especially for beginners. Turn vague requests into clear UI decisions, explain reasoning in plain language, and keep the user as the final decision maker.
 
 ## Token Discipline
 
@@ -58,7 +63,7 @@ Use these defaults unless the product context suggests otherwise:
 - one primary goal per page or screen
 - one primary button style and one secondary style
 - a limited palette: neutral base, one brand color, and status colors
-- body text around `16px` to `18px`
+- body text `16px` to `18px`, line-height around `1.5`, line length around `45` to `75` characters
 - a consistent spacing scale such as `4, 8, 12, 16, 24, 32, 48`
 - single-column forms with labels above inputs
 - short, obvious navigation
@@ -67,6 +72,8 @@ Use these defaults unless the product context suggests otherwise:
 ## Working Rules
 
 - Use contrast, alignment, proximity, repetition, and consistency to create hierarchy.
+- Design mobile-first: get the small-screen layout right before adding complexity for larger screens.
+- Use motion only when it communicates something real, such as state changes or result of an action; never as decoration that delays the user.
 - Remove clutter before adding new UI.
 - Make the primary action obvious.
 - Group related content together.
@@ -152,14 +159,18 @@ Implementation rules after the memo:
 
 ## Accessibility And Ethics
 
-Always check for:
-- sufficient text contrast
-- visible keyboard focus
-- usable keyboard navigation
-- clear labels, errors, and form guidance
-- touch targets appropriate for the platform
-- color not being the only carrier of meaning
-- no dark patterns such as hidden costs, fake urgency, or misleading defaults
+Target WCAG 2.2 AA as the baseline. Always check for:
+- text contrast of at least `4.5:1` for body text, `3:1` for large text and UI component boundaries
+- a clearly visible focus indicator that is never obscured by sticky headers or footers
+- logical keyboard navigation and tab order
+- alternative text for meaningful images and semantic HTML for structure
+- clear labels, helpful error messages, and inline validation feedback
+- touch targets of at least `44px` on touch devices (`24px` is the WCAG minimum, `44px` is the practical mobile standard)
+- meaning never carried by color alone
+- dark mode support through semantic color roles rather than hardcoded values
+- animations that respect `prefers-reduced-motion`
+- complete interface states: empty, loading, and error, not just the happy path
+- no dark patterns such as hidden costs, fake urgency, confirm-shaming, forced continuity, or misleading defaults
 
 ## Communication Style
 
